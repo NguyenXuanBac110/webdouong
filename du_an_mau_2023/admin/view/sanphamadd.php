@@ -26,7 +26,7 @@ $html_danhmuclist = showdm_admin($danhmuclist);
         </div>
         <div class="form-group">
             <label for="name">Mô tả:</label>
-            <input type="text" class="form-control" name="name" id="name" placeholder="Nhập mô tả">
+            <input type="text" class="form-control" name="mota" id="mota" placeholder="Nhập mô tả">
         </div>
         <div class="form-group">
             <label for="price">Giá gốc:</label>

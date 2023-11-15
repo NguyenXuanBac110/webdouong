@@ -50,10 +50,19 @@ if (isset($_SESSION['user']) && ($_SESSION['user']["role"] == 1)) {
             case "delproduct":
                 if (isset($_GET['id']) && ($_GET['id'] > 0)) {
                     $id = $_GET['id'];
-                    $img = IMG_PATH_ADMIN . get_img($id);
-                    if (is_file($img)) {
-                        unlink($img);
+                    $a =get_img($id);
+                    $c =get_bienthe($id);
+                    // echo "<pre>";
+                    // print_r($a);
+                    foreach ($a as $b) {
+                        extract($b);
+                        $img = IMG_PATH_ADMIN . $ten_hinh;
+                        if (is_file($img)) {
+                                unlink($img);
+                            }
                     }
+                       
+
                     try {
                         sanpham_delete($id);
                     } catch (\Throwable $th) {
@@ -70,6 +79,7 @@ if (isset($_SESSION['user']) && ($_SESSION['user']["role"] == 1)) {
                     $iddm = $_POST['iddm'];
                     $imgs = $_FILES['image'];
                     $size = $_POST['size'];                 
+                    $mota = $_POST['mota'];                 
                     $soluong = $_POST['soluong'];             
                     for ($i = 0; $i < count($imgs['name']); $i++) {
                         $target_file = IMG_PATH_ADMIN . $imgs['name'][$i];
@@ -80,7 +90,7 @@ if (isset($_SESSION['user']) && ($_SESSION['user']["role"] == 1)) {
                     // print_r($imgs['name']);
                     // echo'<pre>';
                     // die();
-                    sanpham_insert($name, $price, $iddm, $imgs['name'], $size, $soluong);
+                    sanpham_insert($name, $price, $iddm, $imgs['name'], $size, $soluong, $mota);
                     $sanphamlist = get_dssp_new(100);
                     include('view/sanphamlist.php');
                 } else {

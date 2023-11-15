@@ -4,11 +4,11 @@ require 'global.php';
 
 
 
-function sanpham_insert($name, $price, $iddm ,$imgs, $size, $soluong)
+function sanpham_insert($name, $price, $iddm ,$imgs, $size, $soluong, $mota)
 {
     $i =0;
-    $sql = "INSERT INTO sanpham(name, price, iddm) VALUES (?, ?, ?)";
-    $sanpham_id = pdo_execute_id($sql, $name, $price, $iddm);
+    $sql = "INSERT INTO sanpham(name, price, iddm, mota) VALUES (?, ?, ?, ?)";
+    $sanpham_id = pdo_execute_id($sql, $name, $price, $iddm, $mota);
     $sql2 = "INSERT INTO hinhsanpham(ten_hinh, masp) VALUES (?,?)";
     foreach ($imgs as $image) {
         pdo_execute($sql2, $image, $sanpham_id);
@@ -40,8 +40,12 @@ function sanpham_update($name, $img, $price, $iddm, $id)
 function sanpham_delete($id)
 {
     $sql = "DELETE FROM sanpham WHERE  id=?";
+    $sql1 = "DELETE FROM hinhsanpham WHERE  id=?";
+    $sql2 = "DELETE FROM chitietsanpham WHERE  id=?";
 
     pdo_execute($sql, $id);
+    pdo_execute($sql1, $id);
+    pdo_execute($sql2, $id);
 
 }
 function sanpham_dm($iddm){
@@ -130,9 +134,14 @@ function get_sp__by_id($id)
 
 function get_img($id)
 {
-    $sql = "SELECT img FROM sanpham WHERE id=?";
-    $getimg = pdo_query_one($sql, $id);
-    return $getimg['img'];
+    $sql = "SELECT * FROM hinhsanpham WHERE hinhsanpham.masp=$id";
+    $getimg = pdo_query($sql);
+    return $getimg;
+}
+function get_bienthe($id){
+    $sql = "SELECT * FROM chitietsanpham WHERE chitietsanpham.masp=$id";
+    $getbt = pdo_query($sql);
+    return $getbt;
 }
 
 function get_sp_caphe($limi)
