@@ -3,157 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>The Coffee House</title>
+    <title>Pagination Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .product-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-item {
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .page-item {
+            margin: 0 5px;
+        }
+
+        .page-link {
+            display: block;
+            padding: 8px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .page-link:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-   
-    
-        <header>
-            <nav class="navbar">
-                <div class="logo">
-                    <a href="#">The Coffee House</a>
-                </div>
-                <input type="checkbox" id="menu-toggle">
-                <label for="menu-toggle" class="menu-icon">&#9776;</label>
-                <ul class="menu">
-                    <li><a href="#">TRANG CHỦ</a></li>
-                    <li><a href="#">SẢN PHẨM</a>
-                        <ul class="submenu">
-                            <li><a href="#">Sản phẩm 1</a></li>
-                            <li><a href="#">Sản phẩm 2</a></li>
-                            <li><a href="#">Sản phẩm 3</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">DANH MỤC</a></li>
-                    <li><a href="#">GIỎ HÀNG</a></li>
-                    <li><a href="#">LIÊN HỆ</a></li>
-                </ul>
-            </nav>
-        </header>
-    
-        <!-- Content goes here -->
-    
-        
-    </body>
-    </html>
 
-    <!-- Content goes here -->
+    <ul class="product-list" id="productList">
+        <!-- Product items will be dynamically added here -->
+    </ul>
 
-   
+    <ul class="pagination" id="pagination"></ul>
 
+    <script>
+        // Sample product data
+        const products = [
+            "Product 1", "Product 2", "Product 3", "Product 4", "Product 5",
+            "Product 6", "Product 7", "Product 8", "Product 9", "Product 10",
+            // Add more products as needed
+        ];
 
-<style>
- body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+        const itemsPerPage = 3;
+        let currentPage = 1;
 
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 0;
-}
+        function displayProducts(page) {
+            const productList = document.getElementById("productList");
+            productList.innerHTML = "";
 
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
 
-.logo a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 24px;
-}
+            const currentProducts = products.slice(start, end);
 
-.menu {
-    list-style: none;
-    display: flex;
-    align-items: center;
-}
+            currentProducts.forEach(product => {
+                const li = document.createElement("li");
+                li.className = "product-item";
+                li.textContent = product;
+                productList.appendChild(li);
+            });
+        }
 
-.menu li {
-    margin-right: 20px;
-    position: relative;
-}
+        function setupPagination() {
+            const pagination = document.getElementById("pagination");
+            pagination.innerHTML = "";
 
-.menu a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
-}
+            const totalPages = Math.ceil(products.length / itemsPerPage);
 
-.submenu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #333;
-    padding: 10px;
-}
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement("li");
+                li.className = "page-item";
 
-.submenu ul {
-    list-style: none;
-    padding: 0;
-}
+                const a = document.createElement("a");
+                a.className = "page-link";
+                a.href = "#";
+                a.textContent = i;
 
-.submenu ul li {
-    margin-right: 0;
-}
+                a.addEventListener("click", function () {
+                    currentPage = i;
+                    displayProducts(currentPage);
+                    updatePagination();
+                });
 
-.menu-icon {
-    display: none;
-    cursor: pointer;
-    font-size: 24px;
-}
+                li.appendChild(a);
+                pagination.appendChild(li);
+            }
 
-input[type="checkbox"] {
-    display: none;
-}
+            updatePagination();
+        }
 
-input[type="checkbox"]:checked + .menu {
-    display: block;
-}
+        function updatePagination() {
+            const pageItems = document.querySelectorAll(".page-item");
+            pageItems.forEach((item, index) => {
+                if (index + 1 === currentPage) {
+                    item.classList.add("active");
+                } else {
+                    item.classList.remove("active");
+                }
+            });
+        }
 
-@media screen and (max-width: 768px) {
-    .menu {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 50px;
-        left: 0;
-        background-color: #333;
-        width: 100%;
-        z-index: 2;
-        text-align: center;
-    }
+        // Initial setup
+        displayProducts(currentPage);
+        setupPagination();
+    </script>
 
-    input[type="checkbox"]:checked + .menu {
-        display: flex;
-    }
-
-    .menu li {
-        margin-right: 0;
-    }
-
-    .menu-icon {
-        display: block;
-    }
-}
-
-</style>
-
-
-<script>
-        // script.js
-function toggleSubmenu() {
-    var submenu = document.querySelector('.submenu');
-    submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-}
-
-var menuItem = document.querySelector('.dropdown');
-menuItem.addEventListener('click', toggleSubmenu);
-
-</script>
+</body>
+</html>

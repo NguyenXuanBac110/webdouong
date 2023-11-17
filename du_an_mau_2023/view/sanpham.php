@@ -6,7 +6,7 @@
 ?>
 <div class="containerfull">
         <div class="bgbanner"><?=$title?></div>
-    </div>
+    </div> 
 
     <section class="containerfull">
         <div class="container">

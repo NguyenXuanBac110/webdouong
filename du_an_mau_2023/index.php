@@ -15,10 +15,11 @@ include "dao/donhang.php";
 include "dao/binhluan.php";
 //data danh cho trang chu
 $dssp_all =selectall_sanpham();
-$dssp_new = get_dssp_new(10);
+$dssp_new = get_dssp_new(4);
 $dssp_best = get_dssp_best(4);
 $dssp_caphe = get_sp_caphe(4);
 $dssp_tra = get_sp_tra(4);
+$dssp_banhmi=get_sp_banhmi(4);
 
 if (!isset($_GET['pg'])) {
     include "view/home.php";

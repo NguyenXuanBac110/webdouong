@@ -101,6 +101,8 @@ function selectall_sanpham() {
     return $result;
 }
 
+
+
 // function get_dssp_new($limi)
 // {
 //     $sql = "SELECT sanpham.id, sanpham.name, sanpham.price, sanpham.iddm, sanpham.bestseller, sanpham.mota, hinhsanpham.ma_hinh, hinhsanpham.ten_hinh 
@@ -206,7 +208,7 @@ function get_sp_caphe($limi)
 {
     $sql = "SELECT sanpham.id, sanpham.name, sanpham.price, sanpham.iddm,sanpham.bestseller, sanpham.mota, hinhsanpham.ma_hinh, hinhsanpham.ten_hinh
     FROM sanpham
-    INNER JOIN hinhsanpham ON sanpham.id = hinhsanpham.masp WHERE iddm=5 limit " . $limi;
+    INNER JOIN hinhsanpham ON sanpham.id = hinhsanpham.masp WHERE iddm=4 limit " . $limi;
     
     return pdo_query($sql);
 }
@@ -215,6 +217,13 @@ function get_sp_tra($limi)
     $sql = "SELECT sanpham.id, sanpham.name, sanpham.price, sanpham.iddm,sanpham.bestseller, sanpham.mota, hinhsanpham.ma_hinh, hinhsanpham.ten_hinh
     FROM sanpham
     INNER JOIN hinhsanpham ON sanpham.id = hinhsanpham.masp WHERE iddm=6 limit " . $limi;
+    return pdo_query($sql);
+}
+function get_sp_banhmi($limi)
+{
+    $sql = "SELECT sanpham.id, sanpham.name, sanpham.price, sanpham.iddm,sanpham.bestseller, sanpham.mota, hinhsanpham.ma_hinh, hinhsanpham.ten_hinh
+    FROM sanpham
+    INNER JOIN hinhsanpham ON sanpham.id = hinhsanpham.masp WHERE iddm=5 limit " . $limi;
     return pdo_query($sql);
 }
 function get_sp_iddm($iddm){

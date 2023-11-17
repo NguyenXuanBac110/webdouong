@@ -3,6 +3,8 @@ $html_dssp_new = showsp($dssp_new);
 $html_dssp_best = showsp($dssp_best);
 $html_dssp_caphe = showsp($dssp_caphe);
 $html_dssp_tra = showsp($dssp_tra);
+$html_dssp_banhmi=showsp($dssp_banhmi);
+
 
 ?>
 
@@ -38,9 +40,12 @@ $html_dssp_tra = showsp($dssp_tra);
         <div class="row">
             <h2>Trà</h2>
         </div>
+        <?= $html_dssp_tra ?>
+
         <div class="row">
-            <?= $html_dssp_tra ?>
+        <h2>Bánh Mì</h2> 
         </div>
+        <?= $html_dssp_banhmi ?>
 
     </div>
 </section>
