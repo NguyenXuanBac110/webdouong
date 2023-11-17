@@ -18,19 +18,27 @@ if (isset($_SESSION['user']) && ($_SESSION['user']["role"] == 1)) {
                 break;
             case "updateproduct":
                 if (isset($_POST["updateproduct"])) {
-
                     $name = $_POST['name'];
                     $price = $_POST['price'];
                     $iddm = $_POST['iddm'];
                     $id = $_POST['id'];
-                    $img = $_FILES['image']['name'];
-                    if ($img != "") {
-                        $target_file = IMG_PATH_ADMIN . $img;
-                        move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
+                    $mota = $_POST['mota'];
+                    $size = $_POST['size'];
+                    $soluong = $_POST['soluong'];
+                    $imgs = $_FILES['image'];
+                    $imgold = get_img($id);
+ 
+                    $bienthe = get_bienthe($id);
+                    
+                    if ($imgs !== []) {
+                        for ($i = 0; $i < count($imgs['name']); $i++) {
+                            $target_file = IMG_PATH_ADMIN . $imgs['name'][$i];
+                            move_uploaded_file($imgs['tmp_name'][$i], $target_file);
+                        }
                     } else {
-                        $img = "";
+                        $imgs = [];
                     }
-                    sanpham_update($name, $img, $price, $iddm, $id);
+                    sanpham_update($name, $price, $iddm, $id, $mota,$imgs['name'], $bienthe, $size, $soluong, $imgold);
                 }
                 $sanphamlist = get_dssp_new(100);
                 include('view/sanphamlist.php');
@@ -43,6 +51,8 @@ if (isset($_SESSION['user']) && ($_SESSION['user']["role"] == 1)) {
                 if (isset($_GET['id']) && ($_GET['id'] > 0)) {
                     $id = $_GET['id'];
                     $sp = get_sp__by_id($id);
+                    $img = get_name_img($id);
+                    $bienthe = get_bienthe($id);
                 }
                 $danhmuclist = danhmuc_all();
                 include('view/sanphamupdate.php');
@@ -50,7 +60,7 @@ if (isset($_SESSION['user']) && ($_SESSION['user']["role"] == 1)) {
             case "delproduct":
                 if (isset($_GET['id']) && ($_GET['id'] > 0)) {
                     $id = $_GET['id'];
-                    $a =get_img($id);
+                    $a =get_name_img($id);
                     $c =get_bienthe($id);
                     // echo "<pre>";
                     // print_r($a);
@@ -65,7 +75,7 @@ if (isset($_SESSION['user']) && ($_SESSION['user']["role"] == 1)) {
 
                     try {
                         sanpham_delete($id);
-                    } catch (\Throwable $th) {
+                    } catch (Throwable $th) {
                         echo "<h3 style='color:red;text-align:center;' >Sản phẩm đã có trong giỏ hàng !!! không được phép xoá</h3>";
                     }
                 }

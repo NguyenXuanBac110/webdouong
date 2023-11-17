@@ -25,27 +25,68 @@ function sanpham_inser($name, $price, $iddm )
     pdo_execute($sql, $name, $price, $iddm);
 }
 
-function sanpham_update($name, $img, $price, $iddm, $id)
+function sanpham_update($name, $price, $iddm, $id, $mota ,$imgs ,$idbienthe ,$size, $soluong, $imgold)
 {
-    if ($img != "") {
-        $sql = "UPDATE sanpham SET name=?,img=?,price=?,iddm=? WHERE id=?";
-        pdo_execute($sql, $name, $img, $price, $iddm, $id);
-    } else {
-        $sql = "UPDATE sanpham SET name=?,price=?,iddm=? WHERE id=?";
-        pdo_execute($sql, $name, $price, $iddm, $id);
+    // echo "<pre>";
+    // print_r($imgold);
+    // echo "<pre>";
+    // print_r($imgs);
+    // die();
+   $i =0;
+   $j=0;
+   $d=10;
+  
+   $sql = "UPDATE sanpham SET name = ?, price = ?, iddm = ?, mota = ? WHERE id = ?";
+    pdo_execute($sql, $name, $price, $iddm, $mota, $id);  
+    
+
+    $sql2 = "UPDATE hinhsanpham SET ten_hinh = ? WHERE ma_hinh = ?";
+    $sql6 = "DELETE FROM hinhsanpham WHERE ma_hinh=?";
+    $sql7 = "INSERT INTO hinhsanpham(ten_hinh, masp) VALUES (?,?)";
+    if ($imgs[0] !=='') {
+        for($j =0;$j<$d ;$j++){
+            
+            if (isset($imgold[$j]['ma_hinh'])&&isset($imgs[$j])) {
+                pdo_execute($sql2, $imgs[$j], $imgold[$j]['ma_hinh']);      
+            }
+            if (isset($imgold[$j]['ma_hinh'])&& !isset($imgs[$j])) {
+                pdo_execute($sql6, $imgold[$j]['ma_hinh']);
+            }
+            if (!isset($imgold[$j]['ma_hinh'])&&isset($imgs[$j])) {
+                pdo_execute($sql7, $imgs[$j], $imgold[0]['masp']); 
+            }
+                      
+        }
+
+        
+    }
+    
+    $sql3 = "UPDATE chitietsanpham SET soluong = ?, kichthuoc = ? WHERE mactsp = ? AND masp =?";
+    $sql4= "INSERT INTO chitietsanpham(masp, soluong, kichthuoc) VALUES (?,?,?)";
+
+    foreach($size as $a){
+        if (isset($idbienthe[$i]['mactsp'])) {
+            pdo_execute($sql3 , $soluong[$i], $size[$i],$idbienthe[$i]['mactsp'],$id);
+        }if (!isset($idbienthe[$i]['mactsp'])) {
+            pdo_execute($sql4 ,$id, $soluong[$i], $size[$i]);
+        }          
+        $i++;
     }
 
 }
 
 function sanpham_delete($id)
 {
-    $sql = "DELETE FROM sanpham WHERE  id=?";
-    $sql1 = "DELETE FROM hinhsanpham WHERE  id=?";
-    $sql2 = "DELETE FROM chitietsanpham WHERE  id=?";
-
-    pdo_execute($sql, $id);
+    echo $id;
+    $sql0 = "DELETE FROM hinhsanpham WHERE masp=?";
+    pdo_execute($sql0, $id);
+    $sql1 = "DELETE FROM binhluan WHERE idpro=?";
     pdo_execute($sql1, $id);
+    $sql2 = "DELETE FROM chitietsanpham WHERE masp=?";
     pdo_execute($sql2, $id);
+    $sql = "DELETE FROM sanpham WHERE  id=?";
+    pdo_execute($sql, $id);
+
 
 }
 function sanpham_dm($iddm){
@@ -124,17 +165,34 @@ function get_dssp($kyw, $iddm, $limi)
 }
 
 
-function get_sp__by_id($id)
+function get_sp_by_id($id)
 {
     $sql = "SELECT sanpham.id, sanpham.name, sanpham.price, sanpham.iddm,sanpham.bestseller, sanpham.mota, hinhsanpham.ma_hinh, hinhsanpham.ten_hinh
     FROM sanpham
     INNER JOIN hinhsanpham ON sanpham.id = hinhsanpham.masp WHERE sanpham.id= $id";
     return pdo_query_one($sql);
 }
-
-function get_img($id)
+function get_sp__by_id($id)
 {
+    $sql = "SELECT sanpham.id, sanpham.name, sanpham.price, sanpham.iddm, sanpham.bestseller, sanpham.mota,
+            hinhsanpham.ma_hinh, hinhsanpham.ten_hinh,
+            chitietsanpham.mactsp, chitietsanpham.soluong, chitietsanpham.kichthuoc
+    FROM sanpham
+    INNER JOIN hinhsanpham ON sanpham.id = hinhsanpham.masp
+    INNER JOIN chitietsanpham ON sanpham.id = chitietsanpham.masp
+    WHERE sanpham.id = $id";
+    
+    return pdo_query_one($sql);
+}
+function get_img($id){
     $sql = "SELECT * FROM hinhsanpham WHERE hinhsanpham.masp=$id";
+    $getimg = pdo_query($sql);
+    return $getimg;
+}
+
+function get_name_img($id)
+{
+    $sql = "SELECT ten_hinh FROM hinhsanpham WHERE hinhsanpham.masp=$id";
     $getimg = pdo_query($sql);
     return $getimg;
 }
