@@ -31,21 +31,23 @@ function show_thong_kesp($tk_hh){
 }
 
 function thong_ke_binh_luan(){
-    $sql = "SELECT sanpham.id AS masp, COUNT(binhluan.id) AS countSp, sanpham.name as Nsanpham, sanpham.img as img
+    $sql = "SELECT sanpham.id AS masp, COUNT(binhluan.id) AS countSp, sanpham.name AS Nsanpham,hinhsanpham.ten_hinh
     FROM sanpham
     LEFT JOIN binhluan ON sanpham.id = binhluan.idpro
+    LEFT JOIN hinhsanpham ON sanpham.id = hinhsanpham.masp
     GROUP BY sanpham.id
     ORDER BY sanpham.id";
    return pdo_query($sql);
 }
 function show_thong_kebl($tk_bl){
+    
     $qq='';
     foreach($tk_bl as $thongke) {
         extract($thongke);
     $qq .='
     <tr>
         <td>'.$masp.'</td>
-        <td><img src="' . IMG_PATH_ADMIN . $img . '" alt="' . $Nsanpham . '" width="80px"></td>
+        <td><img src="' . IMG_PATH_ADMIN . $ten_hinh . '" alt="' . $Nsanpham . '" width="80px"></td>
         <td>'.$Nsanpham.'</td>
         <td>'.$countSp.'</td>
         <td>
@@ -63,7 +65,7 @@ function show_thong_keblct($tk_blct){
     $qq .='
     <tr>
         <td>'.$mabl.'</td>
-        <td><img src="' . IMG_PATH_ADMIN . $img . '" alt="" width="80px"></td>
+        <td><img src="' . IMG_PATH_ADMIN . $ten_hinh . '" alt="" width="80px"></td>
         <td>'.$iduser.'</td>
         <td>'.$nameuser.'</td>
         <td>'.$noidung.'</td>
@@ -78,10 +80,11 @@ function show_thong_keblct($tk_blct){
 }
 
 function show_binhluan_tk($ctsp){
-    $sql = "SELECT binhluan.id AS mabl, sanpham.name AS Nsanpham, sanpham.img AS img, user.username as nameuser, binhluan.iduser as iduser, binhluan.noidung as noidung
+    $sql = "SELECT binhluan.id AS mabl, sanpham.name AS Nsanpham, user.username as nameuser, binhluan.iduser as iduser, binhluan.noidung as noidung, hinhsanpham.ten_hinh
     FROM binhluan
     LEFT JOIN sanpham ON binhluan.idpro = sanpham.id
     LEFT JOIN user ON binhluan.iduser = user.id
+    LEFT JOIN hinhsanpham ON binhluan.idpro = hinhsanpham.masp
     where binhluan.idpro = $ctsp" ;
    return pdo_query($sql);
 }

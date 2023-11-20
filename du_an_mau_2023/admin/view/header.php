@@ -28,7 +28,7 @@ $user = $_SESSION["user"]["username"];
     <div class="container-fluid main-page">
 
         <div class="app-main">
-            <nav class="sidebar " hidden style="background-color: #a27f54;    box-shadow: 0px 0px 10px 0px black">
+            <nav class="sidebar" hidden style="background-color: #a27f54;    box-shadow: 0px 0px 10px 0px black">
                 <ul>
                     <li>
                         <a href="admin.php"><i class="fa-solid fa-house ico-side"></i>Dashboards</a>

@@ -26,7 +26,16 @@ if (!isset($_GET['pg'])) {
 } else {
     switch ($_GET['pg']) {
         case 'sanpham':
+            $itemsPerPage = 6;
+            $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
             $dsdm = danhmuc_all();
+            $total_pages = so_trang($itemsPerPage);
+            if($current_page==''||$current_page==1){
+                $begin = 0;
+            }else{
+                $begin = ($current_page-1)*$itemsPerPage;
+            }
+
             if (!isset($_GET['iddm'])) {
                 $iddm = 0;
                 $titlepage = "";
@@ -41,7 +50,8 @@ if (!isset($_GET['pg'])) {
             } else {
                 $kyw = "";
             }
-            $dssp = get_dssp($kyw, $iddm, 12);
+            
+            $dssp = get_dssp($kyw, $iddm, $begin,$itemsPerPage);
             include "view/sanpham.php";
             break;
         case 'danhmuc':

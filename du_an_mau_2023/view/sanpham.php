@@ -5,24 +5,24 @@
     else  $title ="Sản Phẩm";
 ?>
 <div class="containerfull">
-        <div class="bgbanner"><?=$title?></div>
-    </div> 
+    <div class="bgbanner"><?=$title?></div>
+</div>
 
-    <section class="containerfull">
-        <div class="container">
-            <div class="boxleft mr2pt menutrai">
-                <h1>DANH MỤC</h1><br><br>
-                <?=$html_dm;?>
-                <!-- <a href="#">Cà phê</a>
+<section class="containerfull">
+    <div class="container">
+        <div class="boxleft mr2pt menutrai">
+            <h1>DANH MỤC</h1><br><br>
+            <?=$html_dm;?>
+            <!-- <a href="#">Cà phê</a>
                 <a href="#">Trái cây</a>
                 <a href="#">Trà</a>
                 <a href="#">Bánh</a> -->
-            </div>
-            <div class="boxright">
-                <h1><?=$title?></h1><br>
-                <div class="containerfull mr30">
-                    <?=$html_dssp;?>
-                    <!-- <div class="box25 mr15 mb">
+        </div>
+        <div class="boxright">
+            <h1><?=$title?></h1><br>
+            <div class="containerfull mr30">
+                <?=$html_dssp;?>
+                <!-- <div class="box25 mr15 mb">
                         <div class="best"></div>
                         <img src="layout/images/sp1.webp" alt="">
                         <span class="price">$1000</span>
@@ -63,9 +63,16 @@
                         <span class="price">$1000</span>
                         <button>Đặt hàng</button>
                     </div> -->
-                </div>
             </div>
-
-
         </div>
-    </section>
+
+        <div>
+            <?php 
+for ($i = 1; $i <= $total_pages; $i++) {
+    ?>
+            <a href='index.php?pg=sanpham&page=<?=$i?>'><?=$i?></a>
+            <?php 
+}?>
+        </div>
+    </div>
+</section>

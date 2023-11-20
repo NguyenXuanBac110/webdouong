@@ -148,8 +148,16 @@ function get_dssp_view($limi)
     $sql = "SELECT * FROM sanpham ORDER BY view DESC limit " . $limi;
     return pdo_query($sql);
 }
+function so_trang($itemsPerPage){
+    $sql = "SELECT COUNT(*) as total FROM sanpham";
+    $ww= pdo_query($sql);
+    foreach($ww as $a){
+        $total_pages = ceil($a['total'] / $itemsPerPage);  
+    }
+    return $total_pages;
+}
 
-function get_dssp($kyw, $iddm, $limi)
+function get_dssp($kyw, $iddm, $limit,$limit2)
 {
     
     $sql = "SELECT sanpham.id, sanpham.name, sanpham.price, sanpham.iddm,sanpham.bestseller, sanpham.mota, hinhsanpham.ma_hinh, hinhsanpham.ten_hinh
@@ -162,7 +170,7 @@ function get_dssp($kyw, $iddm, $limi)
         $sql .= " AND name like '%" . $kyw . "%'";
 
     }
-    $sql .= " ORDER BY id DESC limit " . $limi;
+    $sql .= " ORDER BY id DESC limit $limit, $limit2";
     return pdo_query($sql);
 }
 
@@ -227,7 +235,11 @@ function get_sp_banhmi($limi)
     return pdo_query($sql);
 }
 function get_sp_iddm($iddm){
-    $sql = "SELECT * FROM sanpham WHERE iddm=$iddm";
+    $sql = "SELECT danhmuc.id,danhmuc.name,sanpham.id as idsp, sanpham.name, sanpham.price, sanpham.bestseller, hinhsanpham.ten_hinh
+    FROM sanpham
+    INNER JOIN hinhsanpham ON sanpham.id = hinhsanpham.masp
+    INNER JOIN danhmuc ON sanpham.iddm = danhmuc.id WHERE danhmuc.id = $iddm
+    ";
     return pdo_query($sql);
 }
 
@@ -272,6 +284,9 @@ function showsp($dssp)
 
 function showsp_admin($dssp)
 {
+    // echo"<pre>";
+    // print_r($dssp);
+    // die();
     $html_dssp = '';
     foreach ($dssp as $sp) {
         extract($sp);
@@ -288,7 +303,7 @@ function showsp_admin($dssp)
      <td>' . $price . '</td>
      <td>
      <a href="admin.php?pg=sanphamupdate&id=' . $id . '" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-         <a href="admin.php?pg=delproduct&id=' . $id . '" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
+         <a href="admin.php?pg=delproduct&id=' . $id. '" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
      </td>
  </tr>';
     }

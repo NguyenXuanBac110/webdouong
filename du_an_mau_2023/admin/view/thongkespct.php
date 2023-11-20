@@ -10,7 +10,6 @@ $as= showsp_admin($tk_hhct);
                 <th>Hình</th>
                 <th>Tên SP</th>
                 <th>Giá</th>
-                <th>Lượt Xem</th>
                 <th>Thao Tác</th>
             </tr>
         </thead>
@@ -25,7 +24,6 @@ $as= showsp_admin($tk_hhct);
                 <th>Hình</th>
                 <th>Tên SP</th>
                 <th>Giá</th>
-                <th>Lượt Xem</th>
                 <th>Thao Tác</th>
             </tr>
         </tfoot>
